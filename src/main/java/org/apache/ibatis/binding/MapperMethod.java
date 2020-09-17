@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2016 the original author or authors.
+ *    Copyright 2009-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.apache.ibatis.binding;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.Flush;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.cursor.Cursor;
@@ -43,6 +45,8 @@ public class MapperMethod {
 
   private final SqlCommand command;
   private final MethodSignature method;
+  /** Logger that is available to subclasses. */
+  protected final Log logger = LogFactory.getLog(getClass());
 
   public MapperMethod(Class<?> mapperInterface, Method method, Configuration config) {
     this.command = new SqlCommand(config, mapperInterface, method);
@@ -92,6 +96,7 @@ public class MapperMethod {
       throw new BindingException("Mapper method '" + command.getName() 
           + " attempted to return null from a method with a primitive return type (" + method.getReturnType() + ").");
     }
+    logger.warn("【Mybatis】执行结果: result = "+ result +" command.getName() :" +command.getName() +" command.getType() :" + command.getType());
     return result;
   }
 
